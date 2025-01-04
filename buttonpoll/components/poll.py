@@ -81,27 +81,27 @@ class PollView(discord.ui.View):
             .get(str(user_id), None)  # everything is a string in config
         )
 
-    @discord.ui.button(label="View my vote", custom_id="view_vote", style=ButtonStyle.grey, row=2)
+    @discord.ui.button(label="Meine Wahl sehen", custom_id="view_vote", style=ButtonStyle.grey, row=2)
     async def view_my_vote_btn(self, interaction: discord.Interaction, button: discord.ui.Button):
         """Show the user their current vote, if any."""
         choice = await self.get_user_voter_vote(
             interaction.guild, interaction.user.id  # type:ignore
         )
         if choice is None:
-            await interaction.response.send_message("You haven't voted yet!", ephemeral=True)
+            await interaction.response.send_message("Du hast an dieser Umfrage noch nicht teilgenommen!", ephemeral=True)
         else:
             change = (
-                "Change your vote by clicking a new button."
+                "Ändere deine Wahl im den du einen neuen Button wählst."
                 if self.poll_settings.allow_vote_change
                 else ""
             )
             await interaction.response.send_message(
-                f"You voted for `{choice}`. " + change,
+                f"Deine Wahl liegt aktuell bei `{choice}`. " + change,
                 ephemeral=True,
             )
 
     @discord.ui.button(
-        label="View results so far", custom_id="view_results", style=ButtonStyle.grey, row=2
+        label="Ergebnisse sehen", custom_id="view_results", style=ButtonStyle.grey, row=2
     )
     async def view_results_btn(self, interaction: discord.Interaction, button: discord.ui.Button):
         """Show the results of the poll."""
@@ -110,7 +110,7 @@ class PollView(discord.ui.View):
         )
         if choice is None:
             await interaction.response.send_message(
-                "You need to vote first to be able to see results.", ephemeral=True
+                "Um die Ergebnisse zusehen, musst du selbst an der Umfrage teilnehmen .", ephemeral=True
             )
             return
 
@@ -121,6 +121,6 @@ class PollView(discord.ui.View):
         }
 
         await interaction.response.send_message(
-            "**Results so far**:\n" + "\n".join(f"{k}: {v}" for k, v in sorted_results.items()),
+            "**Ergebnisse der Umfrage**:\n" + "\n".join(f"{k}: {v}" for k, v in sorted_results.items()),
             ephemeral=True,
         )
