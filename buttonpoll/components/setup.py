@@ -241,7 +241,7 @@ class SetupYesNoView(discord.ui.View):
         self.send_msg_when_over = select.values[0] == "Send new"
         await interaction.response.defer()
 
-    @discord.ui.button(label="Submit & start poll!", style=ButtonStyle.primary)
+    @discord.ui.button(label="Speichern, und senden!", style=ButtonStyle.grey)
     async def btn_submit(self, interaction: discord.Interaction, button: discord.ui.Button):
         if self.vote_change is None:
             await interaction.response.send_message(
@@ -300,7 +300,7 @@ class SetupYesNoView(discord.ui.View):
         )
         e.add_field(
             name=(
-                f"Ends at {datetime_to_timestamp(poll.poll_finish)}, "
+                f"Endet {datetime_to_timestamp(poll.poll_finish)}, "
                 f"{datetime_to_timestamp(poll.poll_finish, 'R')}"
             ),
             value=(
