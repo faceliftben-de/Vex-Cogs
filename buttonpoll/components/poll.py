@@ -34,16 +34,16 @@ class OptionButton(discord.ui.Button):
 
         if self.view.poll_settings.allow_vote_change is False and current_choice is not None:
             msg = (
-                f"You've already voted for `{current_choice}`, and you can't change your vote in "
+                f"Deine Wahl liegt hier bei `{current_choice}`, diese kann in dieser Umfrage nicht geändert werden "
                 "this poll."
             )
         elif current_choice == self.label:
-            msg = f"You're already voting for `{self.label}`!"
+            msg = f"Du hast bereits die Option `{self.label}` getroffen!"
         elif current_choice is not None:
-            msg = f"You've already voted, so I've **changed** your vote to `{self.label}`."
+            msg = f"Du hast dich wohl **umentschieden**, und deine Wahl liegt nun bei `{self.label}`."
             await update_vote()
         else:
-            msg = f"You've voted for `{self.label}`."
+            msg = f"Du hast dich also für die `{self.label}` entschieden."
             await update_vote()
         await interaction.response.send_message(msg, ephemeral=True)
 
