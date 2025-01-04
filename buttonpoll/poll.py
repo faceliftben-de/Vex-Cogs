@@ -216,19 +216,19 @@ class Poll:
 
         if self.send_msg_when_over:
             embed = discord.Embed(
-                title="Poll finished",
+                title="Umfrage beendet",
                 colour=await self.cog.bot.get_embed_color(channel),
-                description=f"**{self.question}** has finished!",
+                description=f"**{self.question}** wurde beendet!",
             )
             embed.add_field(
-                name="Results",
+                name="Ergebnisse der Umfrage",
                 value="\n".join(f"{k}: {v}" for k, v in sorted_results.items()),
                 inline=False,
             )
             view = discord.ui.View()
             view.add_item(
                 discord.ui.Button(
-                    label="Original message", style=ButtonStyle.link, url=poll_msg.jump_url
+                    label="Zur Umfrage", style=ButtonStyle.link, url=poll_msg.jump_url
                 )
             )
 
@@ -239,7 +239,7 @@ class Poll:
             else:
                 message = await channel.send(embed=embed, view=view)
                 log.warning(
-                    f"Channel {self.channel_id} does not allow me to attach files. "
+                    f"Der Kanal {self.channel_id} erlaubt mir nicht, Bilder zusenden. "
                     f"I was unable to attach a pie chart to poll {self.unique_poll_id}."
                 )
 
@@ -248,7 +248,7 @@ class Poll:
             view2 = discord.ui.View()
             view2.add_item(
                 discord.ui.Button(
-                    label="Poll finished. View results",
+                    label="Ergebnisse einsehen",
                     style=ButtonStyle.link,
                     url=message.jump_url,
                 )
@@ -268,7 +268,7 @@ class Poll:
             )
 
             embed.add_field(
-                name="Results",
+                name="Ergebnisse der Umfrage",
                 value="\n".join(f"{k}: {v}" for k, v in sorted_results.items()),
                 inline=False,
             )
