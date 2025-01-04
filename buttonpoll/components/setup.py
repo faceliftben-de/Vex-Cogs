@@ -48,12 +48,12 @@ class StartSetupView(discord.ui.View):
             return True
 
         await interaction.response.send_message(
-            "You don't have permission to do that.", ephemeral=True
+            "Du kannst dies nicht tun.", ephemeral=True
         )
         return False
 
 
-class SetupModal(ui.Modal, title="Poll setup"):
+class SetupModal(ui.Modal, title="Umfrage setup"):
     def __init__(
         self,
         *,
@@ -68,25 +68,25 @@ class SetupModal(ui.Modal, title="Poll setup"):
         self.cog = cog
 
     question = ui.TextInput(
-        label="Question",
-        placeholder="What's your question?",
+        label="Frage",
+        placeholder="Wie lautet die Frage?",
         max_length=256,
     )
     description = ui.TextInput(
-        label="Description",
-        placeholder="Optionally add a description",
+        label="Beschreibung",
+        placeholder="Gebe eine Beschreibung an",
         style=discord.TextStyle.paragraph,
         required=False,
         max_length=4000,
     )
     time = ui.TextInput(
-        label="Poll duration",
-        placeholder="Examples - '1 day', '1 minute', '4 hours'",
+        label="Umfrage Dauer",
+        placeholder="Beispiele - '1 day', '1 minute', '4 hours'",
         max_length=32,
     )
     options = ui.TextInput(
-        label="Options",
-        placeholder="Enter between 2 and 5 options separated by a new line.",
+        label="Optionen",
+        placeholder="Gebe 2 bis 5 Optionen an. Nexte Option next Zeile.",
         max_length=80 * 5,  # each option is limited to 80 characters
         style=discord.TextStyle.paragraph,
     )
@@ -96,24 +96,24 @@ class SetupModal(ui.Modal, title="Poll setup"):
             duration = parse_timedelta(self.time.value or "")
         except Exception:
             await interaction.response.send_message(
-                "Invalid time format. Please use a valid time format.",
+                "Es wurde kein gültiges Zeitformat verwendet! Nutze ein gültiges!",
                 ephemeral=True,
             )
             return
         if duration is None:
             await interaction.response.send_message(
-                "Invalid time format. Please use a valid time format.",
+                "Es wurde kein gültiges Zeitformat verwendet! Nutze ein gültiges!",
                 ephemeral=True,
             )
             return
 
         str_options = str(self.options.value).split("\n")
         if len(str_options) < 2:
-            await interaction.response.send_message("You need at least 2 options.", ephemeral=True)
+            await interaction.response.send_message("Es müssen mindestens 2 Optionen gegeben sein.", ephemeral=True)
             return
         elif len(str_options) > 5:
             await interaction.response.send_message(
-                "You can only have 5 options or less.", ephemeral=True
+                "Du kannst nur maximal 5 Optionen angeben!", ephemeral=True
             )
             return
 
@@ -121,18 +121,18 @@ class SetupModal(ui.Modal, title="Poll setup"):
         for str_option in str_options:
             if len(str_option) > 80:
                 return await interaction.response.send_message(
-                    "One of your options is too long, the limit is 80 characters. Cancelled.",
+                    "Eine Option ist zulang. Maximale Zeichen 80.",
                     ephemeral=True,
                 )
             if str_option in [i.name for i in options]:  # if in already added options
                 return await interaction.response.send_message(
-                    "You can't have duplicate options. Cancelled.", ephemeral=True
+                    "Du hast eine Option zweimal genannt!", ephemeral=True
                 )
             option = PollOption(str_option, discord.ButtonStyle.primary)
             options.append(option)
 
         await interaction.response.send_message(
-            "Great! Just a few quick questions now.",
+            "Großartig! Jetzt nur ein paar kurze Fragen.",
             view=SetupYesNoView(
                 author=self.author,
                 channel=self.channel,
@@ -183,16 +183,16 @@ class SetupYesNoView(discord.ui.View):
         return False
 
     @discord.ui.select(
-        placeholder="Vote changing",
+        placeholder="Umfrage Änderungen",
         options=[
             SelectOption(
-                label="Vote changing - Yes",
-                description="Users will be able to change their vote.",
+                label=" Ja",
+                description="Nutzer können ihre Stimme ändern.",
                 value="yes",
             ),
             SelectOption(
-                label="Vote changing - No",
-                description="Users will not be able to change their vote.",
+                label= "Nein",
+                description="Nutzer können ihre Stimme nicht ändern.",
                 value="no",
             ),
         ],
@@ -202,16 +202,16 @@ class SetupYesNoView(discord.ui.View):
         await interaction.response.defer()
 
     @discord.ui.select(
-        placeholder="View results while live",
+        placeholder="Live Ergebnisse anzeigen",
         options=[
             SelectOption(
-                label="Results while live - Yes",
-                description="Users can view results once they've voted.",
+                label="Ja",
+                description="Nutzer könne Live sehen, wer für was gestimmt hat.",
                 value="yes",
             ),
             SelectOption(
-                label="Results while live - No",
-                description="Users can't view results until the poll's over.",
+                label="Nein",
+                description="Nutzer können nicht sehen, wer für was gestimmt hat.",
                 value="no",
             ),
         ],
@@ -223,15 +223,15 @@ class SetupYesNoView(discord.ui.View):
         await interaction.response.defer()
 
     @discord.ui.select(
-        placeholder="Send message when poll is over",
+        placeholder="Nachricht senden, wenn Umfrage vorbei?",
         options=[
             SelectOption(
-                label="Send new",
-                description="Send a message when the poll is over. Includes a pie chart.",
+                label="Neue senden",
+                description="Sendet eine Nachricht, sobald die Umfrage vorbei ist.",
             ),
             SelectOption(
-                label="Edit old",
-                description="Edit the old message when the poll is over. No pie chart.",
+                label="Bearbeiten",
+                description="Bearbeitet einfach die Nachricht.",
             ),
         ],
     )
@@ -245,19 +245,19 @@ class SetupYesNoView(discord.ui.View):
     async def btn_submit(self, interaction: discord.Interaction, button: discord.ui.Button):
         if self.vote_change is None:
             await interaction.response.send_message(
-                "You didn't select a vote changing option.", ephemeral=True
+                "Du hast keine Angabe bei Änderungen gemacht.", ephemeral=True
             )
             return
 
         if self.view_while_live is None:
             await interaction.response.send_message(
-                "You didn't select a view while live option.", ephemeral=True
+                "Du hast keine Angabe bei Live Ergebnisse gemacht.", ephemeral=True
             )
             return
 
         if self.send_msg_when_over is None:
             await interaction.response.send_message(
-                "You didn't select a send message when over option.", ephemeral=True
+                "Du hast keine Angabe bei Nachricht sendne gemacht.", ephemeral=True
             )
             return
 
@@ -304,16 +304,16 @@ class SetupYesNoView(discord.ui.View):
                 f"{datetime_to_timestamp(poll.poll_finish, 'R')}"
             ),
             value=(
-                "You have one vote, "
+                "Du hast eine Auswahl getroffen, "
                 + (
-                    "and you can change it by clicking a new button."
+                    "du kannst deine Wahl ändern."
                     if poll.allow_vote_change
-                    else "and you can't change it."
+                    else "du kannst deine Wahl nicht mehr ändern."
                 )
                 + (
-                    "\nYou can view the results while the poll is live, once you vote."
+                    "\nDu kannst nun Live sehen, wer für was gestimmmt hat."
                     if poll.view_while_live
-                    else "\nYou can view the results when the poll finishes."
+                    else "\nDas Ergebnisse dieser Umfrage kannst du am Ende sehen."
                 )
             ),
         )
