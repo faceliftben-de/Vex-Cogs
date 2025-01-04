@@ -304,16 +304,16 @@ class SetupYesNoView(discord.ui.View):
                 f"{datetime_to_timestamp(poll.poll_finish, 'R')}"
             ),
             value=(
-                "Du hast eine Auswahl getroffen, "
+                "Du kannst eine Auwahl treffen, "
                 + (
-                    "du kannst deine Wahl ändern."
+                    "und kannst deine Wahl nochmals ändern."
                     if poll.allow_vote_change
-                    else "du kannst deine Wahl nicht mehr ändern."
+                    else "und kannst diese nicht mehr ändern.."
                 )
                 + (
-                    "\nDu kannst nun Live sehen, wer für was gestimmmt hat."
+                    "\nAlle Ergebnisse können Live verfolgt werden."
                     if poll.view_while_live
-                    else "\nDas Ergebnisse dieser Umfrage kannst du am Ende sehen."
+                    else "\nAlle Ergebnisse werden erst nach Ende der Umfrage bekannt gegeben."
                 )
             ),
         )
