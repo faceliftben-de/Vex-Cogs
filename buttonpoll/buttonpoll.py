@@ -143,7 +143,7 @@ class ButtonPoll(commands.Cog):
             )
 
         view = StartSetupView(author=ctx.author, channel=channel, cog=self)
-        await ctx.send("Click below to start a poll!", view=view)
+        await ctx.send("Klicke unten auf den Button, um eine Umfrage zustarten!", view=view)
 
     @commands.guild_only()  # type:ignore
     @commands.bot_has_permissions(embed_links=True)
