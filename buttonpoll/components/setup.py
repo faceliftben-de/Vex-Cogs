@@ -33,7 +33,7 @@ class StartSetupView(discord.ui.View):
         self.channel = channel
         self.cog = cog
 
-    @discord.ui.button(label="Start poll", style=ButtonStyle.primary)
+    @discord.ui.button(label="Umfrage starten", style=ButtonStyle.grey)
     async def btn_start(self, interaction: discord.Interaction, button: discord.ui.Button):
         self.stop()
         await interaction.response.send_modal(
